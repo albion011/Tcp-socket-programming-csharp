@@ -44,5 +44,31 @@ class Server
         using NetworkStream stream = client.GetStream();
         using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
         using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
+
+        writer.WriteLine("PASS_REQUEST");
+        string? pass = reader.ReadLine();
+
+        bool fullAccess = false;
+        lock (LockObj)
+        {
+            if (pass == AdminPassword && !adminConnected)
+            {
+                fullAccess = true;
+                adminConnected = true;
+            }
+        }
+
+        string permissions = fullAccess ? "write,read,execute" : "read";
+
+        if (fullAccess)
+        {
+            Console.WriteLine("Klienti " + nr + " u lidh si ADMIN.");
+            writer.WriteLine("ID:Klient-" + nr + " Privilegjet:" + permissions + " [ADMIN]");
+        }
+        else
+        {
+            Console.WriteLine("Klienti " + nr + " u lidh.");
+            writer.WriteLine("ID:Klient-" + nr + " Privilegjet:" + permissions);
+        }
     }
 }
