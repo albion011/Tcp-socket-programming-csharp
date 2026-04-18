@@ -116,5 +116,12 @@ class Server
       StringSplitOptions.RemoveEmptyEntries);
       string command = parts[0].ToUpper();
 
+      if(command == "MSG")
+        {
+            if(parts.Length < 2) return "Perdorimi: MSG teksti";
+            string message = line.Length > 4 ? line.Substring(4):"";
+            return "Mesazhi u pranua:" + message;        
+        }
+
     }
 }
