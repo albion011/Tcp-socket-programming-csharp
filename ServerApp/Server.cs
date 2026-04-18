@@ -15,6 +15,7 @@ class Server
     static bool adminConnected = false;
     static readonly object LockObj = new object();
 
+
     static void Main()
     {
         Directory.CreateDirectory(DataFolder);
@@ -58,17 +59,52 @@ class Server
             }
         }
 
+        writer.WriteLine("NAME_REQUEST");
+        string? clientName = reader.ReadLine();
+        if (string.IsNullOrWhiteSpace(clientName)) clientName = "I panjohur";
+
         string permissions = fullAccess ? "write,read,execute" : "read";
 
         if (fullAccess)
         {
-            Console.WriteLine("Klienti " + nr + " u lidh si ADMIN.");
+            Console.WriteLine("Klienti " + nr + " - " + clientName + " u lidh si ADMIN.");
             writer.WriteLine("ID:Klient-" + nr + " Privilegjet:" + permissions + " [ADMIN]");
+
         }
         else
         {
-            Console.WriteLine("Klienti " + nr + " u lidh.");
+            Console.WriteLine("Klienti " + nr + " - " + clientName + " u lidh.");
             writer.WriteLine("ID:Klient-" + nr + " Privilegjet:" + permissions);
         }
+        try
+        {
+            string? line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                string response = ProcessRequest(line, fullAccess);
+                Console.WriteLine("[Klient-" + nr + " - " + clientName + "] " + line);
+                writer.WriteLine(response);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Gabim me klientin " + nr + " - " + clientName + ": " + ex.Message);
+        }
+
+        if (fullAccess)
+        {
+            lock (LockObj)
+            {
+                adminConnected = false;
+            }
+            Console.WriteLine("Klienti " + nr + " - " + clientName + " (ADMIN) u shkeput.");
+        }
+        else
+        {
+            Console.WriteLine("Klienti " + nr + " - " + clientName + " u shkeput.");
+        }
+
+        client.Close();
     }
+
 }
