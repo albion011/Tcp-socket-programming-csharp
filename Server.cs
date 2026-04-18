@@ -70,5 +70,35 @@ class Server
             Console.WriteLine("Klienti " + nr + " u lidh.");
             writer.WriteLine("ID:Klient-" + nr + " Privilegjet:" + permissions);
         }
+        try
+        {
+            string? line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                string response = ProcessRequest(line, fullAccess);
+                Console.WriteLine("[Klient-" + nr + "] " + line);
+                writer.WriteLine(response);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Gabim me klientin " + nr + ": " + ex.Message);
+        }
+
+        if (fullAccess)
+        {
+            lock (LockObj)
+            {
+                adminConnected = false;
+            }
+            Console.WriteLine("Klienti " + nr + " (ADMIN) u shkeput.");
+        }
+        else
+        {
+            Console.WriteLine("Klienti " + nr + " u shkeput.");
+        }
+
+        client.Close();
+    
     }
 }
