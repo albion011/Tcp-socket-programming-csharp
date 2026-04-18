@@ -112,7 +112,7 @@ class Server
       if(string.IsNullOrWhiteSpace(line))
       return "Kerkese e zbrazet.";
 
-      string[] parts = line.Split('',3,
+      string[] parts = line.Split(' ',3,
       StringSplitOptions.RemoveEmptyEntries);
       string command = parts[0].ToUpper();
 
@@ -136,7 +136,7 @@ class Server
 
         if(command == "READ")
         {
-            if(parts.Length < 2) return "Perdorimi: READ emriFile";
+            if(parts.Length < 2) return "Perdorimi: READ emriFile.";
 
             string filePath =GetSafePath(parts[1]);
             if(filePath == "") return "Emri i file-it nuk lejohet.";
@@ -149,23 +149,23 @@ class Server
          if(command == "WRITE")
         {
             if(!fullAccess) return "Nuk keni privilegje per WRITE.";
-            if(parts.Length < 3) return "Perdorimi: WRITE emriFile permbajtja";
+            if(parts.Length < 3) return "Perdorimi: WRITE emriFile permbajtja.";
 
             string filePath = GetSafePath(parts[1]);
             if(filePath == "") return "Emri i file-it nuk lejohet.";
 
             File.WriteAllText(filePath, parts[2], Encoding.UTF8);
-            return "File u ruajt me sukses";
+            return "File u ruajt me sukses.";
         }
 
         if(command == "DELETE")
         {
             if(!FullAccess) return "Nuk keni privilegje per DELETE.";
-            if(parts.Length < 2) return "Perdorimi: DELETE emriFile";
+            if(parts.Length < 2) return "Perdorimi: DELETE emriFile.";
 
             string filePath = GetSafePath(parts[1]);
             if(filePath == "") return "Emri i file-it nuk lejohet.";
-            if(!File.Exists(filePath)) return "File nuk ekziston";
+            if(!File.Exists(filePath)) return "File nuk ekziston.";
 
             File.Delete(filePath);
             return "File u fshi me sukses.";
