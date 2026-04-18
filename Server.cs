@@ -157,7 +157,34 @@ class Server
             File.WriteAllText(filePath, parts[2], Encoding.UTF8);
             return "File u ruajt me sukses";
         }
-        
 
+        if(command == "DELETE")
+        {
+            if(!FullAccess) return "Nuk keni privilegje per DELETE.";
+            if(parts.Length < 2) return "Perdorimi: DELETE emriFile";
+
+            string filePath = GetSafePath(parts[1]);
+            if(filePath == "") return "Emri i file-it nuk lejohet.";
+            if(!File.Exists(filePath)) return "File nuk ekziston";
+
+            File.Delete(filePath);
+            return "File u fshi me sukses.";
+        }
+
+        if(command == "EXECUTE")
+        {
+            if(!fullAccess) return "Nuk keni privilegje per EXECUTE.";
+            return "Komanda EXECUTE u lejua.";
+        }
+
+        return "Komande e panjohur.";
+    }
+
+    static string GetSafePath (string fileName)
+    {
+        if(fileName.Contains("..") || fileName.Contains("\\") || fileName.Contains("/"))
+        return "";
+
+        return Path.Combine(DataFolder, fileName);
     }
 }
