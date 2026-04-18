@@ -36,4 +36,23 @@ class Client
                 string? name = Console.ReadLine();
                 writer.WriteLine(name ?? "I panjohur");
             }
+
+            string? info = reader.ReadLine();
+            if (string.IsNullOrEmpty(info))
+            {
+                Console.WriteLine("Serveri nuk dha informacionin e pritshem.");
+                return;
+            }
+
+            Console.WriteLine("U lidh! " + info);
+            Console.WriteLine();
+            Console.WriteLine("Komandat:");
+            Console.WriteLine("MSG teksti");
+            Console.WriteLine("LIST");
+            Console.WriteLine("READ emriFile");
+            Console.WriteLine("WRITE emriFile permbajtja");
+            Console.WriteLine("DELETE emriFile");
+            Console.WriteLine("EXECUTE");
+            Console.WriteLine("EXIT");
+            Console.WriteLine();
             
