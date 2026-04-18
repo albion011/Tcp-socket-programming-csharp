@@ -123,5 +123,41 @@ class Server
             return "Mesazhi u pranua:" + message;        
         }
 
+        if(command == "LIST")
+        {
+            string[] files = Directory.GetFiles(DataFolder);
+            if(files.Length == 0) return "Nuk ka file ne server.";
+
+            for(int i = 0; i < files.Length; i++)
+            files[i] = Path.GetFileName(files[i]);
+
+            return "Files:" + string.Join(",",files);
+        }
+
+        if(command == "READ")
+        {
+            if(parts.Length < 2) return "Perdorimi: READ emriFile";
+
+            string filePath =GetSafePath(parts[1]);
+            if(filePath == "") return "Emri i file-it nuk lejohet.";
+            if(!File.Exists(filePath)) return "File nuk ekziston.";
+
+            return "Permbajtja: " + File.ReadAllText(filePath, Encoding.UTF8);
+        }
+
+    
+         if(command == "WRITE")
+        {
+            if(!fullAccess) return "Nuk keni privilegje per WRITE.";
+            if(parts.Length < 3) return "Perdorimi: WRITE emriFile permbajtja";
+
+            string filePath = GetSafePath(parts[1]);
+            if(filePath == "") return "Emri i file-it nuk lejohet.";
+
+            File.WriteAllText(filePath, parts[2], Encoding.UTF8);
+            return "File u ruajt me sukses";
+        }
+        
+
     }
 }
