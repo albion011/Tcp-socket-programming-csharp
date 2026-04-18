@@ -31,5 +31,18 @@ class Server
             Thread t = new Thread(() => HandleClient(client));
             t.Start();
         }
+    }    
+    static void HandleClient(TcpClient client)
+    {
+        int nr;
+        lock (LockObj)
+        {
+            clientCount++;
+            nr = clientCount;
+        }
+
+        using NetworkStream stream = client.GetStream();
+        using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+        using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
     }
 }
