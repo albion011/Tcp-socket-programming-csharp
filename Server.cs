@@ -101,4 +101,20 @@ class Server
         client.Close();
     
     }
+
+    static readonly string DataFolder = 
+    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "server_files");
+
+    static readonly string AdminPassword = "admin123";
+
+    static string ProcessRequest(string line, bool FullAccess)
+    {
+      if(string.IsNullOrWhiteSpace(line))
+      return "Kerkese e zbrazet.";
+
+      string[] parts = line.Split('',3,
+      StringSplitOptions.RemoveEmptyEntries);
+      string command = parts[0].ToUpper();
+
+    }
 }
