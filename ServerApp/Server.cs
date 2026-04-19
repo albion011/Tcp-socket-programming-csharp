@@ -175,5 +175,21 @@ class Server
             return "File u fshi me sukses.";
         }
 
-    }
-}
+         if (command == "EXECUTE")
+        {
+            if (!fullAccess) return "Nuk keni privilegje per EXECUTE.";
+            return "Komanda EXECUTE u lejua.";
+        }
+
+            return "Komande e panjohur.";
+        }
+
+        static string GetSafePath(string fileName)
+       {
+        if (fileName.Contains("..") || fileName.Contains("\\") || fileName.Contains("/"))
+            return "";
+
+        return Path.Combine(DataFolder, fileName);
+       }
+    } 
+    
