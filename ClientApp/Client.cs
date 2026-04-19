@@ -55,7 +55,7 @@ class Client
             Console.WriteLine("EXECUTE");
             Console.WriteLine("EXIT");
             Console.WriteLine();
-            
+
             while (true)
             {
                 Console.Write("> ");
@@ -84,4 +84,26 @@ class Client
                 Console.WriteLine(response);
                 Console.WriteLine();
             }
-            
+
+            Console.WriteLine("Lidhja u mbyll.");
+        }
+        catch (SocketException ex)
+        {
+            Console.WriteLine("Nuk mund te lidhem me serverin: " + ex.Message);
+            Console.WriteLine("Kontrollo IP-ne, portin dhe nese serveri eshte ndezur.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Ndodhi nje gabim: " + ex.Message);
+        }
+    }
+
+    static bool KomandeValide(string input)
+    {
+        string[] parts = input.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 0) return false;
+
+        string cmd = parts[0].ToUpper();
+        return cmd == "MSG" || cmd == "LIST" || cmd == "READ" || cmd == "WRITE" || cmd == "DELETE" || cmd == "EXECUTE";
+    }
+}
