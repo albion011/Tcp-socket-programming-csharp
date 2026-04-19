@@ -56,3 +56,32 @@ class Client
             Console.WriteLine("EXIT");
             Console.WriteLine();
             
+            while (true)
+            {
+                Console.Write("> ");
+                string? input = Console.ReadLine();
+
+                if (input == null) break;
+                if (input.Trim().Equals("EXIT", StringComparison.OrdinalIgnoreCase)) break;
+                if (input.Trim() == "") continue;
+
+                if (!KomandeValide(input))
+                {
+                    Console.WriteLine("Shkruaj nje komande valide: MSG, LIST, READ, WRITE, DELETE, EXECUTE, EXIT");
+                    Console.WriteLine();
+                    continue;
+                }
+
+                writer.WriteLine(input);
+                string? response = reader.ReadLine();
+
+                if (response == null)
+                {
+                    Console.WriteLine("Lidhja me serverin u nderpre.");
+                    break;
+                }
+
+                Console.WriteLine(response);
+                Console.WriteLine();
+            }
+            
