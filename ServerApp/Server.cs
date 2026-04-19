@@ -120,5 +120,34 @@ class Server
 
         string[] parts = line.Split(' ', 3, StringSplitOptions.RemoveEmptyEntries);
         string command = parts[0].ToUpper();
+
+          if (command == "MSG")
+        {
+            if (parts.Length < 2) return "Perdorimi: MSG teksti";
+            string message = line.Length > 4 ? line.Substring(4) : "";
+            return "Mesazhi u pranua: " + message;
+        }
+
+         if (command == "LIST")
+        {
+            string[] files = Directory.GetFiles(DataFolder);
+            if (files.Length == 0) return "Nuk ka file ne server.";
+
+            for (int i = 0; i < files.Length; i++)
+                files[i] = Path.GetFileName(files[i]);
+
+            return "Files: " + string.Join(", ", files);
+        }
+
+        if (command == "READ")
+        {
+            if (parts.Length < 2) return "Perdorimi: READ emriFile";
+
+            string filePath = GetSafePath(parts[1]);
+            if (filePath == "") return "Emri i file-it nuk lejohet.";
+            if (!File.Exists(filePath)) return "File nuk ekziston.";
+
+            return "Permbajtja: " + File.ReadAllText(filePath, Encoding.UTF8);
+        }
     }
 }
